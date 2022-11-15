@@ -2,10 +2,10 @@ const express = require("express")
 const cors = require("cors")
 const body_parse = require("body-parser")
 const path = require("path")
-const reservasService = require("./reservasService.js")
+const reservasService = require("./reservaService.js")
 
 const app = express()
-const port = 8082
+const port = 8084
 
 
 app.use(cors())
@@ -14,21 +14,20 @@ app.use(body_parse.json())
 const pathName = "/reservas"
 
 
-app.get(pathName,
+app.get(pathName+"/pendientes/idcliente",
     (req, res)=>{
         console.log("Recibimos peticion")
         console.log(req)
-        res.send(reservasService.reservasgetExport())
+        idclient = req.query.id
+        res.send(reservasService.reservasPendientesIdgetExport(id))
 }
 )
 
 
-app.get(pathName+"pendientes/idcliente",
-    (req, res)=>{
-        console.log("Recibimos Petición")
-        console.log(req)
-        idcliente = req.query.id
-        res.send(reservasService.reservasPendientesIdgetExport(id))
+app.get(pathName+"/reservascanceladas",
+    async (req, res)=>{
+        console.log("Recibimos Peticion")
+        res.send(await reservasService.reservasACancelarExport())
 }
 )
 
